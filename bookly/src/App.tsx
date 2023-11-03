@@ -1,32 +1,37 @@
-import { HashRouter, Route, Routes } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+// React router dom
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+
+// LAYOUT
+import AppLayout from './ui/app/AppLayout'
+
+//  404 Not Found
+import PageNotFound from './pages/PageNotFound'
+
+// Pages
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import Allbookmarks from './pages/Allbookmarks'
 
 function App() {
     return (
-        <>
-            <Button>Click me</Button>
+        <Routes>
+            <Route element={<AppLayout />}>
+                <Route index element={<Navigate replace to="all" />} />
+                <Route path="all" element={<Allbookmarks />} />
+            </Route>
 
-            <div className="grid w-full max-w-sm items-center gap-1.5 pl-2">
-                <Label htmlFor="email">Email</Label>
-                <Input type="email" id="email" placeholder="Email" />
-            </div>
-
-            <p className="text-display-X-small">Create an account</p>
-            <p>Tedtrfd</p>
-            <Routes>
-                <Route path="/" element={<p>fdd</p>} />
-            </Routes>
-        </>
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="*" element={<PageNotFound />} />
+        </Routes>
     )
 }
 
 function WrappedApp() {
     return (
-        <HashRouter>
+        <BrowserRouter>
             <App />
-        </HashRouter>
+        </BrowserRouter>
     )
 }
 

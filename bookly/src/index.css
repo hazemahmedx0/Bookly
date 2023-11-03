@@ -101,4 +101,57 @@
             0px 0px 0px 2px #fff, 0px 0px 0px 1px #5f57ff,
             0px 1px 2px 0px rgba(50, 44, 160, 0.4);
     }
+    .primary-btn-bg {
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #5f57ff;
+
+        transition: all 0.2s cubic-bezier(0.6, 0.6, 0, 1);
+    }
+    .primary-btn-bg:hover {
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #5f57ff;
+    }
+    .primary-btn-bg:active {
+        background: linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #5f57ff;
+    }
+
+    .primary-btn-shadow {
+        /* border: 1px solid #5f57ff; */
+        box-shadow: 0px 0px 0px 1px #4f47eb,
+            0px 1px 2px 0px rgba(26, 19, 161, 0.5);
+
+        position: relative;
+    }
+    .primary-btn-shadow::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.32),
+            transparent
+        );
+        border-radius: inherit;
+        content: '';
+        inset: 0;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: xor;
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 1px;
+        pointer-events: none;
+        position: absolute;
+    }
 }

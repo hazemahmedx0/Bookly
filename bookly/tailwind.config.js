@@ -8,30 +8,6 @@ module.exports = {
         './src/**/*.{ts,tsx}',
     ],
     theme: {
-        fontSize: {
-            'display-X-small': [
-                '2rem',
-                {
-                    lineHeight: '2.5rem',
-                    letterSpacing: '-0.02rem',
-                    fontWeight: '106',
-                },
-            ],
-            'label-small': [
-                '0.875rem',
-                {
-                    lineHeight: '1.25rem',
-                    fontWeight: '106',
-                },
-            ],
-            'body-small': [
-                '0.875rem',
-                {
-                    lineHeight: '1.25rem',
-                    fontWeight: '84',
-                },
-            ],
-        },
         container: {
             center: true,
             padding: '2rem',
@@ -40,6 +16,38 @@ module.exports = {
             },
         },
         extend: {
+            fontSize: {
+                'display-X-small': [
+                    '2rem',
+                    {
+                        lineHeight: '2.5rem',
+                        letterSpacing: '-0.02rem',
+                        fontWeight: '106',
+                    },
+                ],
+                'label-small': [
+                    '0.875rem',
+                    {
+                        lineHeight: '1.25rem',
+                        fontWeight: '106',
+                    },
+                ],
+                'body-small': [
+                    '0.875rem',
+                    {
+                        lineHeight: '1.25rem',
+                        fontWeight: '84',
+                    },
+                ],
+                'body-x-small': [
+                    '0.75rem',
+                    {
+                        lineHeight: '1rem',
+                        fontWeight: '84',
+                    },
+                ],
+            },
+
             fontFamily: {
                 sans: ['var(--font-geist-sans)'],
                 mono: ['var(--font-geist-mono)'],

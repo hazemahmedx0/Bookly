@@ -11,6 +11,7 @@ import PageNotFound from './pages/PageNotFound'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Allbookmarks from './pages/Allbookmarks'
+import Collection from './pages/Collection'
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
             <Route element={<AppLayout />}>
                 <Route index element={<Navigate replace to="all" />} />
                 <Route path="all" element={<Allbookmarks />} />
+                <Route path="me/:collectionId" element={<Collection />} />
             </Route>
 
             <Route path="login" element={<Login />} />

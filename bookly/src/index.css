@@ -16,6 +16,7 @@
         color: rgba(0, 0, 0, 0.87);
         font-synthesis: none;
         text-rendering: optimizeLegibility;
+        image-rendering: optimizeQuality;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         -webkit-text-size-adjust: 100%;

@@ -13,6 +13,21 @@ import Signup from './pages/Signup'
 import Allbookmarks from './pages/Allbookmarks'
 import Collection from './pages/Collection'
 
+// React query
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+// Shadcn
+import { Toaster } from '@/components/ui/toaster'
+import AuthRoutes from './ui/app/AuthRoutes'
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 60 * 1000,
+        },
+    },
+})
+
 function App() {
     return (
         <Routes>
@@ -22,18 +37,25 @@ function App() {
                 <Route path="me/:collectionId" element={<Collection />} />
             </Route>
 
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="*" element={<PageNotFound />} />
+            <Route element={<AuthRoutes />}>
+                <Route path="login" element={<Login />} />
+                <Route path="signup" element={<Signup />} />
+                <Route path="*" element={<PageNotFound />} />
+            </Route>
         </Routes>
     )
 }
 
 function WrappedApp() {
     return (
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <>
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <App />
+                    <Toaster />
+                </BrowserRouter>
+            </QueryClientProvider>
+        </>
     )
 }
 

@@ -1,3 +1,4 @@
+// Layout
 import CenterdPage from '../ui/app/CenterdPage'
 
 // Components
@@ -11,6 +12,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form'
+import { useToast } from '@/components/ui/use-toast'
 
 // Types
 import { loginFormSchema } from '@/models/User'
@@ -23,9 +25,30 @@ import { Loader2 } from 'lucide-react'
 // React hook form & zod
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from 'react-router-dom'
+
+// React router
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+
+// API
+import userApi from '../api/modules/user.api'
+import { useEffect } from 'react'
 
 function Login() {
+    const navigate = useNavigate()
+    let [searchParams, setSearchParams] = useSearchParams()
+    const { toast } = useToast()
+
+    useEffect(() => {
+        if (searchParams.get('signup') === 'success') {
+            const toastCall = () =>
+                toast({
+                    title: 'Account created successfully',
+                    description: 'You can now login to your account',
+                })
+            toastCall()
+        }
+    }, [searchParams, toast])
+
     // 1. form definition
     const form = useForm<LoginForm>({
         resolver: zodResolver(loginFormSchema),
@@ -35,10 +58,20 @@ function Login() {
         },
     })
 
-    // 2. form submit handler
     const onSubmit = async (data: LoginForm) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log(data)
+        const { response, err } = await userApi.login(data)
+
+        if (response) {
+            console.log(response)
+            navigate('/all', { replace: true })
+        }
+        if (err) {
+            console.log(err)
+            form.setError('email', {
+                type: 'server',
+                message: (err as { info: string }).info,
+            })
+        }
     }
 
     return (
@@ -49,7 +82,7 @@ function Login() {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className=" w-80 min-w-max "
+                    className=" authForms "
                 >
                     <FormField
                         control={form.control}
@@ -60,6 +93,7 @@ function Login() {
                                 <FormControl>
                                     <Input
                                         placeholder="Enter your email address"
+                                        error={form.formState.errors?.email}
                                         {...field}
                                     />
                                 </FormControl>
@@ -77,6 +111,7 @@ function Login() {
                                     <Input
                                         type="password"
                                         placeholder="Enter your password"
+                                        error={form.formState.errors?.password}
                                         {...field}
                                     />
                                 </FormControl>

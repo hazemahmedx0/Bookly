@@ -23,9 +23,16 @@ import { Loader2 } from 'lucide-react'
 // React hook form & zod
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from 'react-router-dom'
+
+// React router
+import { Link, useNavigate } from 'react-router-dom'
+
+// API
+import userApi from '../api/modules/user.api'
 
 function Signup() {
+    const navigate = useNavigate()
+
     // 1. form definition
     const form = useForm<SignUpForm>({
         resolver: zodResolver(signupFormSchema),
@@ -37,12 +44,18 @@ function Signup() {
 
     // 2. form submit handler
     const onSubmit = async (data: SignUpForm) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log(data)
-        form.reset({
-            email: '',
-            password: '',
-        })
+        const { response, err } = await userApi.signup(data)
+
+        if (response) {
+            navigate('/login?signup=success', { replace: true })
+        }
+        if (err) {
+            console.log(err)
+            form.setError('email', {
+                type: 'server',
+                message: (err as { message: string }).message,
+            })
+        }
     }
 
     return (
@@ -55,7 +68,7 @@ function Signup() {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className=" w-80 min-w-max "
+                    className="authForms  "
                 >
                     <FormField
                         control={form.control}
@@ -66,6 +79,7 @@ function Signup() {
                                 <FormControl>
                                     <Input
                                         placeholder="Enter your email address"
+                                        error={form.formState.errors?.email}
                                         {...field}
                                     />
                                 </FormControl>
@@ -83,10 +97,11 @@ function Signup() {
                                     <Input
                                         type="password"
                                         placeholder="Enter a strong password"
+                                        error={form.formState.errors?.password}
                                         {...field}
                                     />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="w-full" />
                             </FormItem>
                         )}
                     />

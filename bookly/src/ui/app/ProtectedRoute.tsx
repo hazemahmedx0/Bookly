@@ -5,11 +5,13 @@ import { useEffect } from 'react'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate()
-    const { isLoading, isAuthenticated } = useUser()
+    const { isLoading, user, isAuthenticated } = useUser()
 
     useEffect(
         function () {
-            if (!isAuthenticated && !isLoading) navigate('/login')
+            if (!isAuthenticated && !isLoading) {
+                navigate('/login')
+            }
         },
         [isAuthenticated, isLoading, navigate]
     )

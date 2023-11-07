@@ -18,6 +18,6 @@ export function useUser() {
     return {
         isLoading,
         user,
-        isAuthenticated: user?.user?.is_verified === true,
+        isAuthenticated: user?.user?.id,
     }
 }

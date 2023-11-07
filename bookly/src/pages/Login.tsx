@@ -59,18 +59,20 @@ function Login() {
     })
 
     const onSubmit = async (data: LoginForm) => {
-        const { response, err } = await userApi.login(data)
-
-        if (response) {
-            console.log(response)
-            navigate('/all', { replace: true })
-        }
-        if (err) {
-            console.log(err)
-            form.setError('email', {
-                type: 'server',
-                message: (err as { info: string }).info,
-            })
+        try {
+            const { response, err } = await userApi.login(data)
+            if (response) {
+                navigate(`/all`, { replace: true })
+            }
+            if (err) {
+                console.log(err.error.data.email)
+                form.setError('email', {
+                    type: 'server',
+                    message: err.error?.data?.email,
+                })
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 

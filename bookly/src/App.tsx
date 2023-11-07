@@ -19,6 +19,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 // Shadcn
 import { Toaster } from '@/components/ui/toaster'
 import AuthRoutes from './ui/app/AuthRoutes'
+import Unsorted from './pages/Unsorted'
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -34,6 +35,7 @@ function App() {
             <Route element={<AppLayout />}>
                 <Route index element={<Navigate replace to="all" />} />
                 <Route path="all" element={<Allbookmarks />} />
+                <Route path="unsorted" element={<Unsorted />} />
                 <Route path="me/:collectionId" element={<Collection />} />
             </Route>
 

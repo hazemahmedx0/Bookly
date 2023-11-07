@@ -1,10 +1,14 @@
 import { Outlet } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute'
+import SideNav from '../sidenav/SideNav'
 
 function AppLayout() {
     return (
         <ProtectedRoute>
-            <Outlet />
+            <div className="grid grid-cols-[256px_1fr] grid-rows-1 gap-4 h-screen">
+                <SideNav />
+                <Outlet />
+            </div>
         </ProtectedRoute>
     )
 }

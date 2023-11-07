@@ -47,6 +47,7 @@ function Signup() {
         const { response, err } = await userApi.signup(data)
 
         if (response) {
+            console.log(response)
             navigate('/login?signup=success', { replace: true })
         }
         if (err) {

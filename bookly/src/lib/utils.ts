@@ -9,8 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function extractNameFromEmail(email: string) {
     // Use a regular expression to match alphanumeric characters in the email
-    const name = email.match(/([A-Za-z0-9]+)/)
-
+    const name = email.match(/^[a-zA-Z\s]+$/)
     // Check if a match was found, and return it
     if (name) {
         return name[0]

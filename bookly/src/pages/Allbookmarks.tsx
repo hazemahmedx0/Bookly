@@ -1,7 +1,8 @@
-import React from 'react'
+import { useState } from 'react'
+import NavCollecetionsMenu from '../ui/sidenav/menuTree/NavCollecetionsMenu'
 
 function Allbookmarks() {
-    return <div>Allbookmarks</div>
+    return <NavCollecetionsMenu />
 }
 
 export default Allbookmarks

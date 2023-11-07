@@ -9,16 +9,16 @@ type Props = {
 
 export const TypeIcon: React.FC<Props> = (props) => {
     if (props.droppable) {
-        return <Folder />
+        return <Folder size={16} />
     }
 
     switch (props.fileType) {
         case 'image':
-            return <Image />
+            return <Image size={16} />
         case 'csv':
-            return <FileCode />
+            return <FileCode size={16} />
         case 'text':
-            return <CaseSensitive />
+            return <CaseSensitive size={16} />
         default:
             return null
     }

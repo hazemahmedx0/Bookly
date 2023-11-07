@@ -18,3 +18,22 @@ export function extractNameFromEmail(email: string) {
     // Return an empty string if no match was found
     return 'user'
 }
+
+// refactor tree
+
+export function menuTreeRefactor(tree: any) {
+    if (tree === undefined) return
+    console.log(tree, 'this tree')
+    const filteredData = tree?.filter((item: any) => item.id !== 2)
+
+    const transformedData = filteredData.map((item: any) => {
+        return {
+            id: item.id,
+            parent: item.parentId === 2 ? 0 : item.parentId || 0, // Use 0 if parentId is null
+            droppable: true,
+            text: item.name,
+        }
+    })
+
+    return transformedData
+}

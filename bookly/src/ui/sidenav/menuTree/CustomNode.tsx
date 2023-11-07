@@ -5,11 +5,12 @@ import { TypeIcon } from './TypeIcon'
 import styles from './CustomNode.module.css'
 import {
     ArrowRight,
-    ArrowRightCircle,
+    ChevronRight,
     CheckCheckIcon,
     DoorClosed,
     Edit,
 } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
 
 type Props = {
     node: NodeModel<CustomData>
@@ -27,7 +28,7 @@ export const CustomNode: React.FC<Props> = (props) => {
     const [labelText, setLabelText] = useState(text)
 
     const { droppable, data } = props.node
-    const indent = props.depth * 24
+    const indent = props.depth * 8
 
     const handleToggle = (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -55,7 +56,6 @@ export const CustomNode: React.FC<Props> = (props) => {
     const dragOverProps = useDragOver(id, props.isOpen, props.onToggle)
 
     const handleSelect = () => props.onSelect(props.node)
-
     return (
         <div
             className={`tree-node ${styles.root} ${
@@ -72,51 +72,61 @@ export const CustomNode: React.FC<Props> = (props) => {
             >
                 {props.node.droppable && (
                     <div onClick={handleToggle}>
-                        <ArrowRightCircle />
+                        <ChevronRight size={16} />
                     </div>
                 )}
             </div>
-            <div className={styles.labelGridItem}>
-                {visibleInput ? (
-                    <div className={styles.inputWrapper}>
-                        <input
-                            className={`${styles.textField}
+            <NavLink to={`me/${id}`}>
+                <div className={styles.labelGridItem}>
+                    {visibleInput ? (
+                        <div className={styles.inputWrapper}>
+                            <input
+                                className={`${styles.textField}
               ${styles.nodeInput}`}
-                            value={labelText}
-                            onChange={handleChangeText}
-                        />
-                        <div
-                            className={styles.editButton}
-                            onClick={handleSubmit}
-                            //   disabled={labelText === ""}
-                        >
-                            <CheckCheckIcon className={styles.editIcon} />
-                        </div>
-                        <div
-                            className={styles.editButton}
-                            onClick={handleCancel}
-                        >
-                            <DoorClosed className={styles.editIcon} />
-                        </div>
-                    </div>
-                ) : (
-                    <div className={styles.inputWrapper}>
-                        <div>
-                            <TypeIcon
-                                droppable={droppable}
-                                fileType={data?.fileType}
+                                value={labelText}
+                                onChange={handleChangeText}
                             />
+                            <div
+                                className={styles.editButton}
+                                onClick={handleSubmit}
+                                //   disabled={labelText === ""}
+                            >
+                                <CheckCheckIcon
+                                    size={16}
+                                    className={styles.editIcon}
+                                />
+                            </div>
+                            <div
+                                className={styles.editButton}
+                                onClick={handleCancel}
+                            >
+                                <DoorClosed
+                                    size={16}
+                                    className={styles.editIcon}
+                                />
+                            </div>
                         </div>
-                        <p className={styles.nodeLabel}>{props.node.text}</p>
-                        <div
-                            className={styles.editButton}
-                            onClick={handleShowInput}
-                        >
-                            <Edit className={styles.editIcon} />
+                    ) : (
+                        <div className={styles.inputWrapper}>
+                            <div>
+                                <TypeIcon
+                                    droppable={droppable}
+                                    fileType={data?.fileType}
+                                />
+                            </div>
+                            <p className={styles.nodeLabel}>
+                                {props.node.text}
+                            </p>
+                            <div
+                                className={styles.editButton}
+                                onClick={handleShowInput}
+                            >
+                                <Edit size={16} className={styles.editIcon} />
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            </NavLink>
         </div>
     )
 }

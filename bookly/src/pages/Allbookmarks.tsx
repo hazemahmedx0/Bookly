@@ -2,7 +2,7 @@ import { useState } from 'react'
 import NavCollecetionsMenu from '../ui/sidenav/menuTree/NavCollecetionsMenu'
 
 function Allbookmarks() {
-    return <NavCollecetionsMenu />
+    return <p>dsd</p>
 }
 
 export default Allbookmarks

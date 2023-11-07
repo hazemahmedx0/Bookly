@@ -1,13 +1,20 @@
 .root {
     align-items: center;
     display: grid;
-    grid-template-columns: auto auto 1fr auto;
-    height: 32px;
-    padding-inline-end: 8px;
+    grid-template-columns: auto 1fr;
+    height: 30px;
+    padding-inline-end: 2px;
+    color: #52525b;
 }
 
 .root.isSelected {
-    color: #1967d2;
+    color: #18181b;
+    background-color: #e5e7eb;
+    border-radius: 6px;
+}
+
+.root:hover .editButton {
+    display: block;
 }
 
 .expandIconWrapper {
@@ -15,9 +22,30 @@
     font-size: 0;
     cursor: pointer;
     display: flex;
-    height: 24px;
+    height: 16px;
     justify-content: center;
-    width: 24px;
+    width: 16px;
+    transition: transform linear 0.1s;
+    transform: rotate(0deg);
+    margin-left: 8px;
+}
+
+.expandIconWrapper.isOpen {
+    transform: rotate(90deg);
+}
+
+.labelGridItem {
+    padding-inline-start: 2px;
+}
+
+.expandIconWrapper {
+    align-items: center;
+    font-size: 0;
+    cursor: pointer;
+    display: flex;
+    height: 16px;
+    justify-content: center;
+    width: 16px;
     transition: transform linear 0.1s;
     transform: rotate(0deg);
 }
@@ -27,33 +55,13 @@
 }
 
 .labelGridItem {
-    padding-inline-start: 8px;
-}
-
-.expandIconWrapper {
-    align-items: center;
-    font-size: 0;
-    cursor: pointer;
-    display: flex;
-    height: 24px;
-    justify-content: center;
-    width: 24px;
-    transition: transform linear 0.1s;
-    transform: rotate(0deg);
-}
-
-.expandIconWrapper.isOpen {
-    transform: rotate(90deg);
-}
-
-.labelGridItem {
-    padding-inline-start: 8px;
+    padding-inline-start: 2px;
 }
 
 .inputWrapper {
     align-items: center;
     display: grid;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: auto 1fr auto;
     justify-content: flex-start;
 }
 
@@ -63,6 +71,8 @@
 }
 
 .editButton {
+    display: none;
+
     padding: 6px;
 }
 
@@ -71,9 +81,17 @@
 }
 
 .nodeInput {
-    width: 200px;
+    width: 100%;
+    padding: 0px 8px;
+
+    border: #e2e2e2 1px solid;
+    border-radius: 4px;
+    background-color: #f3f3f3;
 }
 
 .nodeLabel {
+    width: 100%;
     padding-right: 15px;
+    margin-left: 8px;
+    font-size: 16px;
 }

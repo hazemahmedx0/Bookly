@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DndProvider } from 'react-dnd'
 import {
     Tree,
@@ -12,11 +12,35 @@ import { CustomNode } from './CustomNode'
 import { CustomDragPreview } from './CustomDragPreview'
 import styles from './App.module.css'
 import SampleData from './sample_data.json'
+import { Placeholder } from './Placeholder'
+
+import { useMenuTree } from '../../../hooks/useMenuTree'
+
+import { menuTreeRefactor } from '../../../lib/utils'
+import { useLocation } from 'react-router-dom'
 
 export default function NavCollecetionsMenu() {
-    const [treeData, setTreeData] = useState<NodeModel[]>(SampleData)
+    const { isLoading, treeMenu } = useMenuTree()
+    console.log(treeMenu)
+    console.log(isLoading)
+    const x = menuTreeRefactor(treeMenu)
+    const [treeData, setTreeData] = useState<NodeModel[]>(x || [])
+
+    console.log(x)
+    console.log(treeData)
+
+    useEffect(() => {
+        setTreeData(menuTreeRefactor(treeMenu) || [])
+    }, [treeMenu])
+    const location = useLocation()
+    const hasMePath = location.pathname.includes('/me')
+    console.log('sddd', hasMePath)
     const handleDrop = (newTree: NodeModel[]) => setTreeData(newTree)
     const [selectedNode, setSelectedNode] = useState<NodeModel>(null)
+
+    useEffect(() => {
+        if (hasMePath === false) setSelectedNode(null)
+    }, [hasMePath, treeData])
     const handleSelect = (node: NodeModel) => setSelectedNode(node)
 
     const handleTextChange = (id: NodeModel['id'], value: string) => {
@@ -33,17 +57,11 @@ export default function NavCollecetionsMenu() {
 
         setTreeData(newTree)
     }
+
+    if (isLoading) return <div>Loading...</div>
     return (
         <DndProvider backend={MultiBackend} options={getBackendOptions()}>
             <div className={styles.app}>
-                <div className={styles.current}>
-                    <p>
-                        Current node:{' '}
-                        <span className={styles.currentLabel}>
-                            {selectedNode ? selectedNode.text : 'none'}
-                        </span>
-                    </p>
-                </div>
                 <Tree
                     tree={treeData}
                     rootId={0}
@@ -66,9 +84,25 @@ export default function NavCollecetionsMenu() {
                     ) => <CustomDragPreview monitorProps={monitorProps} />}
                     onDrop={handleDrop}
                     classes={{
+                        root: styles.treeRoot,
                         draggingSource: styles.draggingSource,
                         dropTarget: styles.dropTarget,
+                        placeholder: styles.placeholderContainer,
                     }}
+                    sort={false}
+                    insertDroppableFirst={false}
+                    canDrop={(
+                        tree,
+                        { dragSource, dropTargetId, dropTarget }
+                    ) => {
+                        if (dragSource?.parent === dropTargetId) {
+                            return true
+                        }
+                    }}
+                    dropTargetOffset={10}
+                    placeholderRender={(node, { depth }) => (
+                        <Placeholder node={node} depth={depth} />
+                    )}
                 />
             </div>
         </DndProvider>

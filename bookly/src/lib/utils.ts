@@ -23,7 +23,6 @@ export function extractNameFromEmail(email: string) {
 
 export function menuTreeRefactor(tree: any) {
     if (tree === undefined) return
-    console.log(tree, 'this tree')
     const filteredData = tree?.filter((item: any) => item.id !== 2)
 
     const transformedData = filteredData.map((item: any) => {

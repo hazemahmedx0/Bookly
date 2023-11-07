@@ -11,7 +11,6 @@ import { CustomData } from '../../../models/SidenavTypes'
 import { CustomNode } from './CustomNode'
 import { CustomDragPreview } from './CustomDragPreview'
 import styles from './App.module.css'
-import SampleData from './sample_data.json'
 import { Placeholder } from './Placeholder'
 
 import { useMenuTree } from '../../../hooks/useMenuTree'
@@ -19,23 +18,43 @@ import { useMenuTree } from '../../../hooks/useMenuTree'
 import { menuTreeRefactor } from '../../../lib/utils'
 import { useLocation } from 'react-router-dom'
 
+import menuApi from '../../../api/modules/menu.api'
+
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+
 export default function NavCollecetionsMenu() {
+    const queryClient = useQueryClient()
+
     const { isLoading, treeMenu } = useMenuTree()
-    console.log(treeMenu)
-    console.log(isLoading)
     const x = menuTreeRefactor(treeMenu)
     const [treeData, setTreeData] = useState<NodeModel[]>(x || [])
-
-    console.log(x)
-    console.log(treeData)
 
     useEffect(() => {
         setTreeData(menuTreeRefactor(treeMenu) || [])
     }, [treeMenu])
     const location = useLocation()
     const hasMePath = location.pathname.includes('/me')
-    console.log('sddd', hasMePath)
-    const handleDrop = (newTree: NodeModel[]) => setTreeData(newTree)
+
+    const handleDrop = async (
+        newTree: NodeModel[],
+        { dragSourceId, dropTargetId, dragSource, dropTarget }
+    ) => {
+        const { response, err } = await menuApi.updateDir({
+            id: dragSource.id,
+            icon: 'default',
+            name: dragSource.text,
+            parentId: dropTargetId,
+        })
+
+        console.log('responseresponse', response)
+        console.log('errerr', err)
+        console.log('dragSource', dragSource)
+        console.log('dragSourceId', dragSourceId)
+        console.log('dropTargetId', dropTargetId)
+        queryClient.invalidateQueries({ queryKey: ['treeMenu'] })
+
+        return setTreeData(newTree)
+    }
     const [selectedNode, setSelectedNode] = useState<NodeModel>(null)
 
     useEffect(() => {
@@ -58,11 +77,16 @@ export default function NavCollecetionsMenu() {
         setTreeData(newTree)
     }
 
+    const onDragEndHandler = (x) => {
+        console.log('source', x)
+    }
+
     if (isLoading) return <div>Loading...</div>
     return (
         <DndProvider backend={MultiBackend} options={getBackendOptions()}>
             <div className={styles.app}>
                 <Tree
+                    onDragEnd={onDragEndHandler}
                     tree={treeData}
                     rootId={0}
                     render={(

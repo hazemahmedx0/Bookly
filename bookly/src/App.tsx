@@ -24,6 +24,9 @@ import Unsorted from './pages/Unsorted'
 // Sonner toast
 import { Toaster as ToasterSonner } from 'sonner'
 
+// Context
+import { AuthProvider } from './context/auth'
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -54,14 +57,16 @@ function App() {
 function WrappedApp() {
     return (
         <>
-            <ToasterSonner richColors={true} />
-            <QueryClientProvider client={queryClient}>
-                <Toaster />
-                <BrowserRouter>
-                    <App />
+            <AuthProvider>
+                <ToasterSonner richColors={true} />
+                <QueryClientProvider client={queryClient}>
                     <Toaster />
-                </BrowserRouter>
-            </QueryClientProvider>
+                    <BrowserRouter>
+                        <App />
+                        <Toaster />
+                    </BrowserRouter>
+                </QueryClientProvider>
+            </AuthProvider>
         </>
     )
 }

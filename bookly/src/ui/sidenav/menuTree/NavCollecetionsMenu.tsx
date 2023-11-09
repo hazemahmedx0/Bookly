@@ -38,7 +38,12 @@ import { useMenuTree } from '../../../hooks/useMenuTree'
 import { menuTreeRefactor } from '../../../lib/utils'
 import { ChevronDown } from 'lucide-react'
 
+// Context
+import { useAuth } from '../../../context/auth'
+
 export default function NavCollecetionsMenu() {
+    const { auth, setAuth } = useAuth()
+
     const queryClient = useQueryClient()
 
     // Tree menu states
@@ -51,8 +56,10 @@ export default function NavCollecetionsMenu() {
 
     // To update tree menu when treeMenu state changes
     useEffect(() => {
-        setTreeData(menuTreeRefactor(treeMenu) || [])
-    }, [treeMenu])
+        setTreeData(
+            menuTreeRefactor(treeMenu, auth?.user?.baseDirectoryId) || []
+        )
+    }, [treeMenu, auth])
 
     // To clear or update selected node state when location changes
     const [selectedNode, setSelectedNode] = useState<NodeModel>(null)
@@ -155,7 +162,7 @@ export default function NavCollecetionsMenu() {
                     <div className={styles.app}>
                         <Tree
                             tree={treeData}
-                            rootId={0}
+                            rootId={auth?.user?.baseDirectoryId || 0}
                             render={(
                                 node: NodeModel<CustomData>,
                                 { depth, isOpen, onToggle }

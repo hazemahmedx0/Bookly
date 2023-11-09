@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useAuth } from '../../context/auth'
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -21,14 +22,14 @@ export function extractNameFromEmail(email: string) {
 
 // refactor tree
 
-export function menuTreeRefactor(tree: any) {
+export function menuTreeRefactor(tree: any, parentid: number) {
     if (tree === undefined) return
     const filteredData = tree?.filter((item: any) => item.id !== 2)
 
     const transformedData = filteredData.map((item: any) => {
         return {
             id: item.id,
-            parent: item.parentId === 2 ? 0 : item.parentId || 0, // Use 0 if parentId is null
+            parent: item.parentId || parentid, // Use 0 if parentId is null
             droppable: true,
             text: item.name,
         }

@@ -41,10 +41,8 @@ const menuApi: any = {
                     ],
                 }
             )
-            console.log('ressss', response)
             return { response }
         } catch (err) {
-            console.log('errrr', err)
             return { err }
         }
     },

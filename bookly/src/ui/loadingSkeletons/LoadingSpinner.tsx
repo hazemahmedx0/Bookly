@@ -11,8 +11,8 @@ function LoadingSpinner() {
                 className="mb-8 animate-pulse  "
             />
             <div className="space-y-3">
-                <Skeleton className="h-6 w-[200px]" />
-                <Skeleton className="h-6 w-[200px]" />
+                <Skeleton className="  h-6 w-[200px]" />
+                <Skeleton className="h-6 w-[200px] " />
                 <Skeleton className="h-8 w-[200px]" />
             </div>
         </div>

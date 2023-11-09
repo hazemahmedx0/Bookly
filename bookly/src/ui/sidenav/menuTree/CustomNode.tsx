@@ -19,7 +19,11 @@ type Props = {
     isSelected: boolean
     onToggle: (id: NodeModel['id']) => void
     onSelect: (node: NodeModel) => void
-    onTextChange: (id: NodeModel['id'], value: string) => void
+    onTextChange: (
+        id: NodeModel['id'],
+        value: string,
+        parentId: NodeModel['parent']
+    ) => void
 }
 
 export const CustomNode: React.FC<Props> = (props) => {
@@ -50,7 +54,7 @@ export const CustomNode: React.FC<Props> = (props) => {
 
     const handleSubmit = () => {
         setVisibleInput(false)
-        props.onTextChange(id, labelText)
+        props.onTextChange(id, labelText, props.node.parent)
     }
 
     const dragOverProps = useDragOver(id, props.isOpen, props.onToggle)
@@ -114,7 +118,7 @@ export const CustomNode: React.FC<Props> = (props) => {
                                     fileType={data?.fileType}
                                 />
                             </div>
-                            <p className={styles.nodeLabel}>
+                            <p className={`${styles.nodeLabel} truncate`}>
                                 {props.node.text}
                             </p>
                             <div

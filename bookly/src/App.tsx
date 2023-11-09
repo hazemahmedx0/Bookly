@@ -21,6 +21,9 @@ import { Toaster } from '@/components/ui/toaster'
 import AuthRoutes from './ui/app/AuthRoutes'
 import Unsorted from './pages/Unsorted'
 
+// Sonner toast
+import { Toaster as ToasterSonner } from 'sonner'
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -51,7 +54,9 @@ function App() {
 function WrappedApp() {
     return (
         <>
+            <ToasterSonner richColors={true} />
             <QueryClientProvider client={queryClient}>
+                <Toaster />
                 <BrowserRouter>
                     <App />
                     <Toaster />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+// Dnd and tree view imports
 import { DndProvider } from 'react-dnd'
 import {
     Tree,
@@ -10,59 +11,116 @@ import {
 import { CustomData } from '../../../models/SidenavTypes'
 import { CustomNode } from './CustomNode'
 import { CustomDragPreview } from './CustomDragPreview'
-import styles from './App.module.css'
 import { Placeholder } from './Placeholder'
+import styles from './App.module.css'
 
-import { useMenuTree } from '../../../hooks/useMenuTree'
+//////////////////////////
 
-import { menuTreeRefactor } from '../../../lib/utils'
+// Toast
+import { toast } from 'sonner'
+
+// React rounter dom
 import { useLocation } from 'react-router-dom'
 
+// React query
+import { useQueryClient } from '@tanstack/react-query'
+
+// Loading skeleton
+import TreeMenuLoading from '../../loadingSkeletons/TreeMenuLoading'
+
+// API
 import menuApi from '../../../api/modules/menu.api'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+// Hooks
+import { useMenuTree } from '../../../hooks/useMenuTree'
+
+// Utils
+import { menuTreeRefactor } from '../../../lib/utils'
+import { ChevronDown } from 'lucide-react'
 
 export default function NavCollecetionsMenu() {
     const queryClient = useQueryClient()
 
+    // Tree menu states
+    const [treeOpen, setTreeOpend] = useState(true)
     const { isLoading, treeMenu } = useMenuTree()
-    const x = menuTreeRefactor(treeMenu)
-    const [treeData, setTreeData] = useState<NodeModel[]>(x || [])
+    const treeMenuRefactord = menuTreeRefactor(treeMenu)
+    const [treeData, setTreeData] = useState<NodeModel[]>(
+        treeMenuRefactord || []
+    )
 
+    // To update tree menu when treeMenu state changes
     useEffect(() => {
         setTreeData(menuTreeRefactor(treeMenu) || [])
     }, [treeMenu])
+
+    // To clear or update selected node state when location changes
+    const [selectedNode, setSelectedNode] = useState<NodeModel>(null)
     const location = useLocation()
     const hasMePath = location.pathname.includes('/me')
 
+    const handleSelect = (node: NodeModel) => setSelectedNode(node)
+
+    useEffect(() => {
+        if (hasMePath === false) setSelectedNode(null)
+    }, [hasMePath, treeData])
+
+    // Handle drop event when drag and drop node in tree menu
     const handleDrop = async (
         newTree: NodeModel[],
-        { dragSourceId, dropTargetId, dragSource, dropTarget }
+        {
+            dragSourceId,
+            dropTargetId,
+            dragSource,
+            dropTarget,
+        }: {
+            dragSourceId: number
+            dropTargetId: number
+            dragSource: NodeModel
+            dropTarget: NodeModel
+        }
     ) => {
+        // Save old tree
+        const tempNode: NodeModel[] = treeData
+        // Update tree temporary for UI
+        setTreeData(newTree)
         const { response, err } = await menuApi.updateDir({
             id: dragSource.id,
             icon: 'default',
             name: dragSource.text,
             parentId: dropTargetId,
         })
-
-        console.log('responseresponse', response)
-        console.log('errerr', err)
-        console.log('dragSource', dragSource)
-        console.log('dragSourceId', dragSourceId)
-        console.log('dropTargetId', dropTargetId)
+        // If error, rollback tree
+        if (err) {
+            setTreeData(tempNode)
+            return
+        }
         queryClient.invalidateQueries({ queryKey: ['treeMenu'] })
-
-        return setTreeData(newTree)
     }
-    const [selectedNode, setSelectedNode] = useState<NodeModel>(null)
 
-    useEffect(() => {
-        if (hasMePath === false) setSelectedNode(null)
-    }, [hasMePath, treeData])
-    const handleSelect = (node: NodeModel) => setSelectedNode(node)
+    const handleTextChange = async (
+        id: NodeModel['id'],
+        value: string,
+        parentId: NodeModel['parent']
+    ) => {
+        const updateNodeName = async () => {
+            const { response, err } = await menuApi.updateDir({
+                id,
+                icon: 'default',
+                name: value,
+                parentId,
+            })
+            if (err) {
+                toast.error('Error')
+            } else {
+                toast.success(`Your changes have been saved`)
+            }
+        }
 
-    const handleTextChange = (id: NodeModel['id'], value: string) => {
+        toast.promise(updateNodeName, {
+            loading: 'Loading...',
+        })
+
         const newTree = treeData.map((node) => {
             if (node.id === id) {
                 return {
@@ -77,58 +135,73 @@ export default function NavCollecetionsMenu() {
         setTreeData(newTree)
     }
 
-    const onDragEndHandler = (x) => {
-        console.log('source', x)
-    }
-
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return <TreeMenuLoading />
     return (
-        <DndProvider backend={MultiBackend} options={getBackendOptions()}>
-            <div className={styles.app}>
-                <Tree
-                    onDragEnd={onDragEndHandler}
-                    tree={treeData}
-                    rootId={0}
-                    render={(
-                        node: NodeModel<CustomData>,
-                        { depth, isOpen, onToggle }
-                    ) => (
-                        <CustomNode
-                            node={node}
-                            depth={depth}
-                            isOpen={isOpen}
-                            isSelected={node.id === selectedNode?.id}
-                            onToggle={onToggle}
-                            onSelect={handleSelect}
-                            onTextChange={handleTextChange}
-                        />
-                    )}
-                    dragPreviewRender={(
-                        monitorProps: DragLayerMonitorProps<CustomData>
-                    ) => <CustomDragPreview monitorProps={monitorProps} />}
-                    onDrop={handleDrop}
-                    classes={{
-                        root: styles.treeRoot,
-                        draggingSource: styles.draggingSource,
-                        dropTarget: styles.dropTarget,
-                        placeholder: styles.placeholderContainer,
-                    }}
-                    sort={false}
-                    insertDroppableFirst={false}
-                    canDrop={(
-                        tree,
-                        { dragSource, dropTargetId, dropTarget }
-                    ) => {
-                        if (dragSource?.parent === dropTargetId) {
-                            return true
-                        }
-                    }}
-                    dropTargetOffset={10}
-                    placeholderRender={(node, { depth }) => (
-                        <Placeholder node={node} depth={depth} />
-                    )}
+        <>
+            <p className="text-zinc-800 pl-2 text-label-small flex justify-between items-center">
+                <span>Collections</span>{' '}
+                <ChevronDown
+                    className={`text-zinc-600 ${!treeOpen ? 'rotate-90' : ''}`}
+                    size={16}
+                    onClick={() => setTreeOpend(!treeOpen)}
                 />
-            </div>
-        </DndProvider>
+            </p>
+
+            {treeOpen ? (
+                <DndProvider
+                    backend={MultiBackend}
+                    options={getBackendOptions()}
+                >
+                    <div className={styles.app}>
+                        <Tree
+                            tree={treeData}
+                            rootId={0}
+                            render={(
+                                node: NodeModel<CustomData>,
+                                { depth, isOpen, onToggle }
+                            ) => (
+                                <CustomNode
+                                    node={node}
+                                    depth={depth}
+                                    isOpen={isOpen}
+                                    isSelected={node.id === selectedNode?.id}
+                                    onToggle={onToggle}
+                                    onSelect={handleSelect}
+                                    onTextChange={handleTextChange}
+                                />
+                            )}
+                            dragPreviewRender={(
+                                monitorProps: DragLayerMonitorProps<CustomData>
+                            ) => (
+                                <CustomDragPreview
+                                    monitorProps={monitorProps}
+                                />
+                            )}
+                            onDrop={handleDrop}
+                            classes={{
+                                root: styles.treeRoot,
+                                draggingSource: styles.draggingSource,
+                                dropTarget: styles.dropTarget,
+                                placeholder: styles.placeholderContainer,
+                            }}
+                            sort={false}
+                            insertDroppableFirst={false}
+                            canDrop={(
+                                tree,
+                                { dragSource, dropTargetId, dropTarget }
+                            ) => {
+                                if (dragSource?.parent === dropTargetId) {
+                                    return true
+                                }
+                            }}
+                            dropTargetOffset={10}
+                            placeholderRender={(node, { depth }) => (
+                                <Placeholder node={node} depth={depth} />
+                            )}
+                        />
+                    </div>
+                </DndProvider>
+            ) : null}
+        </>
     )
 }

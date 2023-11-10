@@ -81,14 +81,12 @@ export default function NavCollecetionsMenu() {
                 Number(collectionId),
                 treeData
             )
-            console.log('tempChain', tempChain)
             setCollectionChain(tempChain)
         }
-    }, [collectionId, treeData])
+    }, [])
 
     // To update selected node state and style when user vistid the collection page directly
     useEffect(() => {
-        console.log(Number(collectionId))
         const currentNode = treeData?.find(
             (item) => item.id === Number(collectionId)
         )

@@ -1,6 +1,8 @@
-import { Plus } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
+
 import CreateCollection from '../../dialogs/CreateCollection'
+
+import { Plus } from 'lucide-react'
 
 function AddNewCollectionPlus() {
     const [isCreatingDialogOpen, setIsCreatingDialogOpen] = useState(false)

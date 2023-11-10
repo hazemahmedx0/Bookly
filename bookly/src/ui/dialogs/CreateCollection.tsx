@@ -42,7 +42,7 @@ import { useUser } from '../../hooks/useUser'
 
 const FormSchema = z.object({
     name: z.string({
-        required_error: 'Please Add a name.',
+        required_error: 'Please Add name.',
     }),
     parent: z.any(),
 })
@@ -52,7 +52,7 @@ function CreateCollection({
     onCreatingClosed,
 }: {
     isCreatingDialogOpen: boolean
-    onCreatingClosed: (params: any) => any
+    onCreatingClosed: (params?: any) => any
 }) {
     const { user } = useUser()
     const { isLoading, treeMenu: treedata } = useMenuTree()
@@ -74,12 +74,15 @@ function CreateCollection({
         })
 
         try {
-            createCollection({
-                name: data.name,
-                parentId: isNaN(data.parent)
-                    ? user?.user?.baseDirectoryId
-                    : Number(data.parent),
-            })
+            createCollection(
+                {
+                    name: data.name,
+                    parentId: isNaN(data.parent)
+                        ? user?.user?.baseDirectoryId
+                        : Number(data.parent),
+                },
+                { onSuccess: () => onCreatingClosed() }
+            )
         } catch (err) {
             console.log(err)
         } finally {
@@ -106,6 +109,7 @@ function CreateCollection({
                                     <FormLabel>Collection name</FormLabel>
                                     <FormControl>
                                         <Input
+                                            defaultValue=""
                                             placeholder="collection"
                                             {...field}
                                         />

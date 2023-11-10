@@ -1,3 +1,4 @@
+// Chadcn
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -6,12 +7,9 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { useState } from 'react'
-
+// Form
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -19,7 +17,6 @@ import * as z from 'zod'
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -34,8 +31,6 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 
-import { toast } from 'sonner'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCreateCollection } from '../../hooks/useCreateCollection'
 import { useMenuTree } from '../../hooks/useMenuTree'
 import { useUser } from '../../hooks/useUser'
@@ -55,10 +50,8 @@ function CreateCollection({
     onCreatingClosed: (params?: any) => any
 }) {
     const { user } = useUser()
-    const { isLoading, treeMenu: treedata } = useMenuTree()
-    const queryClient = useQueryClient()
+    const { treeMenu: treedata } = useMenuTree()
 
-    treedata && console.log(Object.values(treedata))
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
@@ -73,20 +66,15 @@ function CreateCollection({
                 : Number(data.parent),
         })
 
-        try {
-            createCollection(
-                {
-                    name: data.name,
-                    parentId: isNaN(data.parent)
-                        ? user?.user?.baseDirectoryId
-                        : Number(data.parent),
-                },
-                { onSuccess: () => onCreatingClosed() }
-            )
-        } catch (err) {
-            console.log(err)
-        } finally {
-        }
+        createCollection(
+            {
+                name: data.name,
+                parentId: isNaN(data.parent)
+                    ? user?.user?.baseDirectoryId
+                    : Number(data.parent),
+            },
+            { onSuccess: () => onCreatingClosed() }
+        )
     }
 
     return (

@@ -187,7 +187,7 @@ export default function NavCollecetionsMenu() {
                             rootId={auth?.user?.baseDirectoryId || 0}
                             render={(
                                 node: NodeModel<CustomData>,
-                                { depth, isOpen, onToggle }
+                                { depth, isOpen, onToggle, hasChild }
                             ) => (
                                 <CustomNode
                                     node={node}
@@ -197,6 +197,7 @@ export default function NavCollecetionsMenu() {
                                     onToggle={onToggle}
                                     onSelect={handleSelect}
                                     onTextChange={handleTextChange}
+                                    hasChild={hasChild}
                                 />
                             )}
                             dragPreviewRender={(

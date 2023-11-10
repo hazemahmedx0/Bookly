@@ -19,6 +19,7 @@ type Props = {
     depth: number
     isOpen: boolean
     isSelected: boolean
+    hasChild: boolean
     onToggle: (id: NodeModel['id']) => void
     onSelect: (node: NodeModel) => void
     onTextChange: (
@@ -76,7 +77,7 @@ export const CustomNode: React.FC<Props> = (props) => {
                     props.isOpen ? styles.isOpen : ''
                 }`}
             >
-                {props.node.droppable && (
+                {props.node.droppable && props.hasChild && (
                     <div onClick={handleToggle}>
                         <ChevronRight size={16} />
                     </div>

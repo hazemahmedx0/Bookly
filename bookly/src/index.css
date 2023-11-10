@@ -158,4 +158,115 @@
         pointer-events: none;
         position: absolute;
     }
+
+    /* destructive */
+
+    .destructive-btn-bg {
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #df1c41;
+
+        transition: all 0.2s cubic-bezier(0.6, 0.6, 0, 1);
+    }
+    .destructive-btn-bg:hover {
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #df1c41;
+    }
+    .destructive-btn-bg:active {
+        background: linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #df1c41;
+    }
+
+    .destructive-btn-shadow {
+        /* border: 1px solid #DF1C41; */
+        box-shadow: 0px 0px 0px 1px #df1c41,
+            0px 1px 2px 0px rgba(161, 19, 19, 0.5);
+
+        position: relative;
+    }
+
+    .destructive-btn-shadow::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.32),
+            transparent
+        );
+        border-radius: inherit;
+        content: '';
+        inset: 0;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: xor;
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 1px;
+        pointer-events: none;
+        position: absolute;
+    }
+    /* Secondary */
+
+    .Secondary-btn-bg {
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #fff;
+
+        transition: all 0.2s cubic-bezier(0.6, 0.6, 0, 1);
+    }
+    .Secondary-btn-bg:hover {
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #fff;
+    }
+    .Secondary-btn-bg:active {
+        background: linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            #fff;
+    }
+
+    .Secondary-btn-shadow {
+        box-shadow: 0px 0px 0px 1px rgba(18, 55, 105, 0.08),
+            0px 1px 2px 0px rgba(164, 172, 185, 0.24);
+        position: relative;
+    }
+
+    .Secondary-btn-shadow::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.32),
+            transparent
+        );
+        border-radius: inherit;
+        content: '';
+        inset: 0;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: xor;
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 1px;
+        pointer-events: none;
+        position: absolute;
+    }
 }

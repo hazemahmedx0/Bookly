@@ -4,13 +4,15 @@ import { CustomData } from '../../../models/SidenavTypes'
 import { TypeIcon } from './TypeIcon'
 import styles from './CustomNode.module.css'
 import {
-    ArrowRight,
     ChevronRight,
     CheckCheckIcon,
     DoorClosed,
     Edit,
+    Pencil,
+    MoreVertical,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import { MoreOption } from './MoreOption'
 
 type Props = {
     node: NodeModel<CustomData>
@@ -97,7 +99,7 @@ export const CustomNode: React.FC<Props> = (props) => {
                             >
                                 <CheckCheckIcon
                                     size={16}
-                                    className={styles.editIcon}
+                                    className={styles.fixededitIcon}
                                 />
                             </div>
                             <div
@@ -106,7 +108,7 @@ export const CustomNode: React.FC<Props> = (props) => {
                             >
                                 <DoorClosed
                                     size={16}
-                                    className={styles.editIcon}
+                                    className={styles.fixededitIcon}
                                 />
                             </div>
                         </div>
@@ -121,11 +123,14 @@ export const CustomNode: React.FC<Props> = (props) => {
                             <p className={`${styles.nodeLabel} truncate`}>
                                 {props.node.text}
                             </p>
-                            <div
-                                className={styles.editButton}
-                                onClick={handleShowInput}
-                            >
-                                <Edit size={16} className={styles.editIcon} />
+                            <div className={styles.editButton}>
+                                <Pencil
+                                    onClick={handleShowInput}
+                                    size={16}
+                                    className={styles.editIcon}
+                                />
+
+                                <MoreOption id={Number(id)} />
                             </div>
                         </div>
                     )}

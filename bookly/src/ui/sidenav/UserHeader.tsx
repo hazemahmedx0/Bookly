@@ -1,6 +1,5 @@
-import { Plus } from 'lucide-react'
-import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import AddNewCollectionPlus from './header/AddNewCollectionPlus'
 
 function UserHeader() {
     return (
@@ -21,9 +20,7 @@ function UserHeader() {
                     </span>
                 </div>
             </div>
-            <div className=" transition-all w-6 h-6 flex bg-transparent justify-center items-center rounded-md hover:bg-gray-200 ">
-                <Plus className="text-gray-700 w-5 h-5" />
-            </div>
+            <AddNewCollectionPlus />
         </div>
     )
 }

@@ -20,7 +20,7 @@ import styles from './App.module.css'
 import { toast } from 'sonner'
 
 // React rounter dom
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 // React query
 import { useQueryClient } from '@tanstack/react-query'
@@ -35,7 +35,9 @@ import menuApi from '../../../api/modules/menu.api'
 import { useMenuTree } from '../../../hooks/useMenuTree'
 
 // Utils
-import { menuTreeRefactor } from '../../../lib/utils'
+import { menuTreeRefactor, getParentChain } from '../../../lib/utils'
+
+// Icons
 import { ChevronDown } from 'lucide-react'
 
 // Context
@@ -49,7 +51,10 @@ export default function NavCollecetionsMenu() {
     // Tree menu states
     const [treeOpen, setTreeOpend] = useState(true)
     const { isLoading, treeMenu } = useMenuTree()
-    const treeMenuRefactord = menuTreeRefactor(treeMenu)
+    const treeMenuRefactord = menuTreeRefactor(
+        treeMenu,
+        auth?.user?.baseDirectoryId
+    )
     const [treeData, setTreeData] = useState<NodeModel[]>(
         treeMenuRefactord || []
     )
@@ -65,12 +70,31 @@ export default function NavCollecetionsMenu() {
     const [selectedNode, setSelectedNode] = useState<NodeModel>(null)
     const location = useLocation()
     const hasMePath = location.pathname.includes('/me')
-
+    const { collectionId } = useParams()
     const handleSelect = (node: NodeModel) => setSelectedNode(node)
 
+    // To update collection chain when collectionId changes or user vistid the collection page directly
+    const [collectionChain, setCollectionChain] = useState<number[]>([])
     useEffect(() => {
+        if (treeData && collectionId) {
+            const tempChain: number[] = getParentChain(
+                Number(collectionId),
+                treeData
+            )
+            console.log('tempChain', tempChain)
+            setCollectionChain(tempChain)
+        }
+    }, [collectionId, treeData])
+
+    // To update selected node state and style when user vistid the collection page directly
+    useEffect(() => {
+        console.log(Number(collectionId))
+        const currentNode = treeData?.find(
+            (item) => item.id === Number(collectionId)
+        )
+        if (currentNode) setSelectedNode(currentNode)
         if (hasMePath === false) setSelectedNode(null)
-    }, [hasMePath, treeData])
+    }, [hasMePath, treeData, collectionId])
 
     // Handle drop event when drag and drop node in tree menu
     const handleDrop = async (
@@ -205,6 +229,7 @@ export default function NavCollecetionsMenu() {
                             placeholderRender={(node, { depth }) => (
                                 <Placeholder node={node} depth={depth} />
                             )}
+                            initialOpen={collectionChain}
                         />
                     </div>
                 </DndProvider>

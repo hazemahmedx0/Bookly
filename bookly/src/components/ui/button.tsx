@@ -10,11 +10,12 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    'primary-btn-bg primary-btn-border primary-btn-shadow text-primary-foreground focus-visible:outline-none focus-visible:border-indigo-500 focus-visible:ring-1 focus-visible:ring-indigo-500/23  focus-visible:ring-offset-1 focus-visible:borderindigo-500',
+                    'primary-btn-bg primary-btn-border primary-btn-shadow text-primary-foreground focus-visible:outline-none focus-visible:border-indigo-500 focus-visible:ring-1 focus-visible:ring-indigo-500/23  focus-visible:ring-offset-1 focus-visible:border-indigo-500',
                 destructive:
-                    'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+                    'destructive-btn-bg destructive-btn-border destructive-btn-shadow text-primary-foreground focus-visible:outline-none focus-visible:border-red-500 focus-visible:ring-1 focus-visible:ring-red-500/23  focus-visible:ring-offset-1 focus-visible:border-red-500',
+                // 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
                 outline:
-                    'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+                    'Secondary-btn-bg Secondary-btn-border Secondary-btn-shadow text-zinc-900  focus-visible:outline-none focus-visible:border-Neutral-500 focus-visible:ring-1 focus-visible:ring-Neutral-500/23  focus-visible:ring-offset-1 focus-visible:border-Neutral-500',
                 secondary:
                     'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',

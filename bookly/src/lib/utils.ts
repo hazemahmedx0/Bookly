@@ -37,3 +37,23 @@ export function menuTreeRefactor(tree: any, parentid: number) {
 
     return transformedData
 }
+
+//To get opend chain of menu
+export function getParentChain(elementId: number, data: any) {
+    const chain = []
+    let currentId = elementId
+
+    while (currentId !== undefined) {
+        const parent = data.find((item) => item.id === currentId)
+        if (parent) {
+            currentId = parent.parent
+            if (currentId !== undefined) {
+                chain.unshift(parent.id) // Add the parent to the beginning of the array
+            }
+        } else {
+            currentId = undefined // Break the loop if the parent is not found
+        }
+    }
+
+    return chain
+}

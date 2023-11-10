@@ -12,9 +12,20 @@
     background-color: #e5e7eb;
     border-radius: 6px;
 }
+.editButton {
+    display: flex;
+    gap: 4px;
 
-.root:hover .editButton {
+    padding: 6px;
+}
+
+.root:hover .editIcon {
     display: block;
+}
+
+.editIcon {
+    display: none;
+    font-size: 20px;
 }
 
 .expandIconWrapper {
@@ -70,13 +81,7 @@
     padding: 6px 0;
 }
 
-.editButton {
-    display: none;
-
-    padding: 6px;
-}
-
-.editIcon {
+.fixededitIcon {
     font-size: 20px;
 }
 

@@ -3,7 +3,9 @@ import privateClient from '../client/private.client'
 
 const userEndpoints = {
     menudir: 'dir/all',
+    adddir: 'dir/create',
     update: 'dir',
+    delete: '/dir?ids=',
 }
 
 const menuApi: any = {
@@ -15,6 +17,31 @@ const menuApi: any = {
             return { err }
         }
     },
+
+    addCollection: async ({
+        name,
+        parentId,
+    }: {
+        name: string
+        parentId: number
+    }) => {
+        try {
+            console.log('name', name)
+            console.log('name', parentId)
+            const response = await privateClient.post(
+                userEndpoints.adddir,
+
+                {
+                    name,
+                    parentId,
+                }
+            )
+            return { response }
+        } catch (err) {
+            return { err }
+        }
+    },
+
     updateDir: async ({
         id,
         icon,
@@ -43,6 +70,19 @@ const menuApi: any = {
             )
             return { response }
         } catch (err) {
+            return { err }
+        }
+    },
+    delete: async ({ ids }: { ids: number[] }) => {
+        try {
+            const response = await privateClient.delete(
+                `${userEndpoints.delete}[${ids}]`
+            )
+            console.log('response', response)
+            return { response }
+        } catch (err) {
+            console.log('response', err)
+
             return { err }
         }
     },

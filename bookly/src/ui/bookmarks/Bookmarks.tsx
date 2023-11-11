@@ -7,7 +7,7 @@ function Bookmarks() {
             {sampleData.map((item) => (
                 <article
                     role="listitem"
-                    className="flex flex-col h-full relative border rounded-lg overflow-clip"
+                    className="flex flex-col h-full relative border rounded-lg overflow-clip hover:shadow-sm hover:border-neutral-300 transition-all"
                 >
                     <div className="  h-60 overflow-clip relative border-b">
                         <img

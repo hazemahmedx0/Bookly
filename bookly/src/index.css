@@ -97,6 +97,22 @@
     .authForms {
         @apply w-80;
     }
+
+    .mainGrid {
+        @apply grid-cols-[repeat(auto-fill,minmax(min(calc(50%_-_16px*2),314px),1fr))] grid-rows-[1fr];
+    }
+
+    .urlBookmark {
+        bottom: 0;
+        color: transparent;
+        font-size: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        text-decoration: none;
+    }
+
     .inputshadow {
         box-shadow: 0px 1px 2px 0px rgba(18, 55, 105, 0.08);
     }

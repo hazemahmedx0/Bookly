@@ -1,8 +1,13 @@
-import { useState } from 'react'
-import NavCollecetionsMenu from '../ui/sidenav/menuTree/NavCollecetionsMenu'
+import BookmarksHeader from '../ui/bookmarks/BookmarksHeader'
+import Bookmarks from '../ui/bookmarks/Bookmarks'
 
 function Allbookmarks() {
-    return <p>dsd</p>
+    return (
+        <div className=" h-screen overflow-hidden">
+            <BookmarksHeader />
+            <Bookmarks />
+        </div>
+    )
 }
 
 export default Allbookmarks

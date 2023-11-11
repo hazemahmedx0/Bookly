@@ -5,7 +5,7 @@ import SideNav from '../sidenav/SideNav'
 function AppLayout() {
     return (
         <ProtectedRoute>
-            <div className="grid grid-cols-[256px_1fr] grid-rows-1 gap-4 h-screen">
+            <div className="grid grid-cols-[256px_1fr] grid-rows-1  h-screen">
                 <SideNav />
                 <Outlet />
             </div>

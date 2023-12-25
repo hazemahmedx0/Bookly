@@ -285,4 +285,15 @@
         pointer-events: none;
         position: absolute;
     }
+
+    /* Gradients */
+    .smooth-black-gradient {
+        background: rgb(2, 0, 36);
+        background: linear-gradient(
+            360deg,
+            rgba(2, 0, 36, 1) 0%,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 0) 100%
+        );
+    }
 }

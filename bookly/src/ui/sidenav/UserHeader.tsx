@@ -7,12 +7,9 @@ function UserHeader() {
         <div className="flex flex-row justify-between items-center h-11 sticky">
             <div className="flex flex-row items-center gap-2 pl-2">
                 <Avatar className=" w-6 h-6 ">
-                    <AvatarImage
-                        src="https://github.com/xshadcn.png"
-                        alt="@shadcn"
-                    />
+                    <AvatarImage src={user?.user?.photo} alt="@shadcn" />
                     <AvatarFallback className="bg-red-100 text-[10px]">
-                        CN
+                        {user?.user?.name?.charAt(0)}
                     </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col ">

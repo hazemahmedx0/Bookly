@@ -20,21 +20,6 @@ export function useMenuTree() {
         } catch (err) {
             return err
         }
-
-        // if (response) {
-        //     const filteredData = response.filter(
-        //         (item: CustomData) => item.id !== 2
-        //     )
-
-        //     const transformedData = filteredData.map((item: CustomData) => {
-        //         return {
-        //             id: item.id,
-        //             parent: item.parentId || 0, // Use 0 if parentId is null
-        //             droppable: true,
-        //             text: item.name,
-        //         }
-        //     })
-        // }
     }
 
     const { isLoading, data: treeMenu } = useQuery({

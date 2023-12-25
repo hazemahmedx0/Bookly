@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute'
 import SideNav from '../sidenav/SideNav'
-
 function AppLayout() {
     return (
         <ProtectedRoute>

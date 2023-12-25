@@ -18,11 +18,6 @@ function MainCategories() {
             Icon: <Archive className=" w-4 h-4" />,
             link: '/unsorted',
         },
-        {
-            name: 'Trash',
-            Icon: <Trash className=" w-4 h-4" />,
-            link: '/trash',
-        },
     ]
 
     return (

@@ -5,6 +5,10 @@
 
 Bookly is a bookmark manager web application built using React (Vite) and Radiux UI, incorporating Chadcn, Lucide React Icons, DND (Drag and Drop), Sonner, Tailwind CSS, Axios, Zod, and TypeScript. This project is designed to provide users with a seamless and intuitive platform for managing their bookmarks.
 
+## Demo
+
+https://github.com/Hazemmahdyx/Bookly/assets/88671390/57e2d5c5-dbcb-4e58-adcc-0b84e17200d9
+
 ## Features
 
 1. **User Sign Up/Login:**

@@ -3,6 +3,7 @@ import { useUser } from '../../hooks/useUser'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuth } from '../../context/auth'
+import LogoGray from '../../assets/logogray.svg'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate()
@@ -20,7 +21,19 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
         },
         [isAuthenticated, isLoading, navigate, user, setAuth]
     )
-    if (isLoading) return <Loader2 />
+    if (isLoading)
+        return (
+            <>
+                <div className="w-full flex justify-center h-screen">
+                    <img
+                        src={LogoGray}
+                        alt="Bookly"
+                        width={60}
+                        className="mb-8 animate-pulse "
+                    />
+                </div>
+            </>
+        )
 
     // 4. If there IS a user, render the app
     if (isAuthenticated) {

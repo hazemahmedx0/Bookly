@@ -41,7 +41,7 @@ The application will be accessible at http://localhost:3000.
 
 
 ## Tasks (Todo)
-
+- [ ] Collaboration
 - [ ] Improve Choosing Collection View List
 - [ ] User onboarding
 - [ ] Implement Search Feature

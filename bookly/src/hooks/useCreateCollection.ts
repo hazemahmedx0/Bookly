@@ -27,7 +27,7 @@ export function useCreateCollection() {
     const { isPending: isCreating, mutate: createCollection } = useMutation({
         mutationFn: createCollectionHandler,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['AllBookmarks'] })
+            queryClient.invalidateQueries({ queryKey: ['treeMenu'] })
             toast.success('Collection successfully created')
         },
         onError: (err) => toast.error(err.message),

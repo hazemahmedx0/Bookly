@@ -61,6 +61,7 @@ function BookmarkSheet({
     sheetVisible,
     setSheetvisible,
     bookMarkmetaData,
+    edit = false,
 }: any) {
     const { auth, setAuth } = useAuth()
     const { treeMenu: treedata } = useMenuTree()
@@ -84,16 +85,51 @@ function BookmarkSheet({
     })
 
     useEffect(() => {
-        form.setValue('link', bookMarkmetaData?.url || '')
+        form.setValue(
+            'link',
+            bookMarkmetaData?.url ?? bookMarkmetaData?.link ?? ''
+        )
         form.setValue('title', bookMarkmetaData?.title || '')
         form.setValue('description', bookMarkmetaData?.description || ' ')
-        form.setValue('directoryId', auth?.user?.baseDirectoryId || '')
+        form.setValue('directoryId', bookMarkmetaData?.directoryId || ' ')
+        form.setValue(
+            'directoryId',
+            bookMarkmetaData?.directoryId ?? auth?.user?.baseDirectoryId ?? ''
+        )
     }, [bookMarkmetaData])
 
     // 2. form submit handler
     const onSubmit = async (data: bookmarkForm) => {
-        console.log(data)
-        console.log(data)
+        try {
+            if (edit) {
+                await updateBookmark(data)
+            } else {
+                await addBookmark(data)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const updateBookmark = async (data: bookmarkForm) => {
+        const { response, err } = await bookmarkApi.updateBookmark({
+            id: bookMarkmetaData?.id,
+            link: bookMarkmetaData?.link,
+            title: data.title,
+            directoryId: Number(data.directoryId),
+            description: data.description,
+            favorite: data.favorite,
+            type: data.type,
+        })
+
+        if (response) {
+            handleBookmarkUpdate(data.directoryId)
+        } else {
+            console.error('Error updating bookmark:', err)
+        }
+    }
+
+    const addBookmark = async (data: bookmarkForm) => {
         const { response, err } = await bookmarkApi.addBookmark({
             ...data,
             directoryId: Number(data.directoryId),
@@ -101,23 +137,28 @@ function BookmarkSheet({
 
         if (response) {
             form.reset()
-            console.log(response)
-            queryClient.invalidateQueries({ queryKey: ['AllBookmarks'] })
-            if (
-                collectionId !== undefined &&
-                Number(collectionId) === Number(data.directoryId)
-            ) {
-                queryClient.invalidateQueries({
-                    queryKey: [`collection-${collectionId}`],
-                })
-            }
-            setSheetvisible(false)
-        }
-        if (err) {
-            console.log(err)
+            handleBookmarkUpdate(data.directoryId)
+        } else {
+            console.error('Error adding bookmark:', err)
         }
     }
+
+    const handleBookmarkUpdate = (updatedDirectoryId: string | number) => {
+        queryClient.invalidateQueries({ queryKey: ['AllBookmarks'] })
+
+        if (
+            collectionId !== undefined &&
+            Number(collectionId) === Number(updatedDirectoryId)
+        ) {
+            queryClient.invalidateQueries({
+                queryKey: [`collection-${collectionId}`],
+            })
+        }
+
+        setSheetvisible(false)
+    }
     const [imgloaded, setImageloaded] = useState(false)
+
     return (
         <div>
             <Sheet
@@ -156,7 +197,8 @@ function BookmarkSheet({
                                             )}
 
                                             <p className="truncate">
-                                                {bookMarkmetaData?.url}
+                                                {bookMarkmetaData?.url ??
+                                                    bookMarkmetaData?.link}
                                             </p>
                                         </span>
                                     </div>
@@ -217,9 +259,12 @@ function BookmarkSheet({
                                             <FormLabel>Collection</FormLabel>
                                             <Select
                                                 onValueChange={field.onChange}
-                                                defaultValue={
-                                                    auth?.user?.baseDirectoryId
-                                                }
+                                                defaultValue={(
+                                                    bookMarkmetaData?.directoryId ??
+                                                    auth?.user
+                                                        ?.baseDirectoryId ??
+                                                    ''
+                                                ).toString()}
                                             >
                                                 <FormControl>
                                                     <SelectTrigger>
@@ -250,7 +295,7 @@ function BookmarkSheet({
                                 <Button
                                     size="sm"
                                     type="submit"
-                                    className=" mt-6 m;-auto"
+                                    className=" mt-6 "
                                     disabled={form.formState.isSubmitting}
                                 >
                                     {form.formState.isSubmitting ? (
@@ -258,9 +303,11 @@ function BookmarkSheet({
                                             className="animate-spin"
                                             size={16}
                                         />
+                                    ) : edit ? (
+                                        'Save'
                                     ) : (
-                                        'Add'
-                                    )}{' '}
+                                        'Create'
+                                    )}
                                 </Button>
                             </SheetFooter>
                         </form>

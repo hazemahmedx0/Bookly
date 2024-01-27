@@ -43,6 +43,9 @@ import { ChevronDown } from 'lucide-react'
 // Context
 import { useAuth } from '../../../context/auth'
 
+// Components
+import TreeMenuEmpty from '../../../components/empty-states/TreeMenuEmpty'
+
 export default function NavCollecetionsMenu() {
     const { auth, setAuth } = useAuth()
 
@@ -175,8 +178,11 @@ export default function NavCollecetionsMenu() {
                     onClick={() => setTreeOpend(!treeOpen)}
                 />
             </p>
+            {treeOpen && treeData.length === 0 ? ( // If tree menu is open and tree data is empty
+                <TreeMenuEmpty />
+            ) : null}
 
-            {treeOpen ? (
+            {treeOpen && treeData.length !== 0 ? (
                 <DndProvider
                     backend={MultiBackend}
                     options={getBackendOptions()}

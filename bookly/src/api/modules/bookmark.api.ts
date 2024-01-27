@@ -6,6 +6,7 @@ const userEndpoints = {
     allBookmarks: 'bkmrk/all',
     collectionBookmarks: 'dir/content/',
     deleteBookmark: '/bkmrk?ids=',
+    update: '/bkmrk',
 }
 
 const bookmarkApi: any = {
@@ -79,6 +80,46 @@ const bookmarkApi: any = {
                     title,
                     description,
                     tags,
+                }
+            )
+            return { response }
+        } catch (err) {
+            return { err }
+        }
+    },
+    updateBookmark: async ({
+        id,
+        link,
+        title,
+        directoryId,
+        description,
+        favorite,
+        type,
+    }: {
+        id: number
+        link: string
+        title: string
+        description: string
+        directoryId: number
+        favorite: boolean
+        type: string
+    }) => {
+        try {
+            const response = await privateClient.patch(
+                userEndpoints.update,
+
+                {
+                    changes: [
+                        {
+                            id,
+                            link,
+                            title,
+                            directoryId,
+                            description,
+                            favorite,
+                            type,
+                        },
+                    ],
                 }
             )
             return { response }
